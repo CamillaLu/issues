@@ -17,3 +17,4 @@ jobs:
         with:
           days-before-stale: 2
           days-before-delete: 3
+          ignore-issue-interaction: true
