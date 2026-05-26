@@ -22,7 +22,7 @@ jobs:
           ref: ${{ github.event.inputs.issue_branch }}
       - name: Generate Dockerfile
         run: |
-          repo2docker . --no-build > Dockerfile
+          repo2docker --no-build . > Dockerfile
       - name: Build image
         run: docker build -t issue-env .
       - name: Execute notebook
