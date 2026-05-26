@@ -21,10 +21,10 @@ jobs:
         with:
           ref: ${{ github.event.inputs.issue_branch }}
       - name: Build image
-        run: |
-          repo2docker --no-run --image-name=issue-env .
+        run: repo2docker --no-run --image-name=issue-env .
       - name: Execute notebook
-        run: docker run --rm \
-            -v ${{ github.workspace }}:/work \
-            issue-env \
-            jupyter nbconvert --to notebook --execute /work/issue-${{ github.event.inputs.issue_number }}/issue-${{ github.event.inputs.issue_number }}.ipynb
+        run: |
+          docker run --rm \
+          -v ${{ github.workspace }}:/work \
+          issue-env \
+          jupyter nbconvert --to notebook --execute /work/issue-${{ github.event.inputs.issue_number }}/issue-${{ github.event.inputs.issue_number }}.ipynb
