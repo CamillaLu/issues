@@ -20,11 +20,9 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.issue_branch }}
-      - name: Generate Dockerfile
-        run: |
-          repo2docker --no-build . > Dockerfile
       - name: Build image
-        run: docker build -t issue-env .
+        run: |
+          repo2docker --no-run --image-name=issue-env .
       - name: Execute notebook
         run: docker run --rm \
             -v ${{ github.workspace }}:/work \
