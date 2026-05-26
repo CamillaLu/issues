@@ -1,0 +1,32 @@
+name: Test Reproducibility
+
+on:
+  workflow_dispatch:
+    inputs:
+      issue_branch:
+        description: 'Branch with the issue to reproduce'
+        required: true
+      issue_number:
+        description: 'Number of the issue to reproduce'
+        required: true
+
+jobs:
+  reproduce:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install repo2docker
+        run: pip install jupyter-repo2docker
+      - name: Checkout issue branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.issue_branch }}
+      - name: Generate Dockerfile
+        run: |
+          repo2docker --no-build --output-dockerfile Dockerfile .
+      - name: Build image
+        run: docker build -t issue-env .
+      - name: Execute notebook
+        run: docker run --rm \
+            -v ${{ github.workspace }}:/work \
+            issue-env \
+            jupyter nbconvert --to notebook --execute /work/issue-${{ github.event.inputs.issue_number }}/issue-${{ github.event.inputs.issue_number }}.ipynb
