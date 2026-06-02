@@ -1,4 +1,5 @@
 name: Test Reproducibility
+run-name: ${{ inputs.issue_branch }}
 
 on:
   workflow_dispatch:
